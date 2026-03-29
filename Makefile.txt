@@ -1,0 +1,17 @@
+CXX      = g++
+CXXFLAGS = -Wall -I./SFML-3.0.2/include
+LDFLAGS  = -L./SFML-3.0.2/lib
+LIBS     = -lsfml-graphics -lsfml-window -lsfml-system -mwindows
+TARGET   = paint_demo.exe
+SRC      = HelloPaint.cpp
+
+all: $(TARGET)
+
+$(TARGET): $(SRC)
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET) $(LDFLAGS) $(LIBS)
+
+run: $(TARGET)
+	./$(TARGET)
+
+clean:
+	del /Q $(TARGET)
