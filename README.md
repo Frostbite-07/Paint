@@ -6,8 +6,8 @@ For the sake of having a reasonable file size, SFML is not included with the fil
 
 - Download SFML 3.0.2.
 - Inside the .zip file you download, there should be a folder called SFML-3.0.2, move it to the same directory as the .cpp program file.
-- To build and run immediately:
+- To build in your terminal (Command Prompt, PowerShell):
 ```
-mingw32-make run
+mingw32-make -f Makefile.txt
 ```
     
