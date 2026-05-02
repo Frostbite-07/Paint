@@ -1,3 +1,4 @@
+#include "PixelBuffer.h"
 #include <iostream>
 #include <vector>
 
@@ -9,6 +10,7 @@ class PixelBuffer::Inner
     int width;
     int height;
 public:
+    Inner(int width, int height) : width(width), height(height), pixels(width * height * 4, 0) {}
     void setPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
     {
         if ((x < 0) || (x >= width) || (y < 0) || (y >= height))
@@ -23,15 +25,15 @@ public:
     {
         return pixels;
     }
-    int PixelBuffer::getWidth() const
+    int getWidth() const
     {
         return width;
     }
-    int PixelBuffer::getHeight() const
+    int getHeight() const
     {
         return height;
     }
-    void PixelBuffer::clear(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+    void clear(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
     {
         for (int i = 0; i < width * height; ++i)
         {
