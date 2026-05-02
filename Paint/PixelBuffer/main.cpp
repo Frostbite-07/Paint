@@ -1,4 +1,4 @@
-#include "PixelBuffer.h"
+#include "../../PixelBuffer.h"
 #include <iostream>
 #include <vector>
 
