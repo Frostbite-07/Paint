@@ -4,18 +4,24 @@
 
 #ifndef TP_TEXTUREMANAGER_H
 #define TP_TEXTUREMANAGER_H
-#include <vector>
 #include <SFML/Graphics/Texture.hpp>
+#include "../PixelBuffer/PixelBuffer.h"
+
+namespace sf {
+    class Texture;
+}
 
 class TextureManager {
-    private:
-    sf::Texture texture;
-    bool needsUpdate;
+private:
+    class Inner;
+    Inner *impl;
 
-    public:
-    void update(std::vector<uint8_t> pixels, PixelBuffer buffer);
-    sf::Texture& getTexture(sf::Texture& texture) const;
+public:
+    TextureManager();
+    ~TextureManager();
 
+    void update(const PixelBuffer buffer);
+    const sf::Texture &getTexture() const;
 };
 
 #endif //TP_TEXTUREMANAGER_H
