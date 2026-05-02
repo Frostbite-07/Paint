@@ -10,7 +10,7 @@ class PixelBuffer::Inner
     int width;
     int height;
 public:
-    Inner(int width, int height) : width(width), height(height), pixels(width * height * 4, 0) {}
+    Inner(int w, int h) : width(w), height(h), pixels(w * h * 4, 0) {}
     void setPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
     {
         if ((x < 0) || (x >= width) || (y < 0) || (y >= height))
@@ -33,7 +33,7 @@ public:
     {
         return height;
     }
-    void clear(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+    void clearPixels(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
     {
         for (int i = 0; i < width * height; ++i)
         {
@@ -45,9 +45,38 @@ public:
     }
 };
 
-
-int main()
+PixelBuffer::PixelBuffer(int width, int height)
 {
-
-    return 0;
+    impl = new Inner(width, height);
 }
+
+PixelBuffer::~PixelBuffer()
+{
+    delete impl;
+}
+
+void PixelBuffer::setPixel(int x, int y, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+    impl->setPixel(x, y, r, g, b, a);
+}
+
+const std::vector<uint8_t>& PixelBuffer::getPixels() const
+{
+    return impl->getPixels();
+}
+
+int PixelBuffer::getWidth() const
+{
+    return impl->getWidth();
+}
+
+int PixelBuffer::getHeight() const
+{
+    return impl->getHeight();
+}
+
+void PixelBuffer::clearPixels(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+    impl->clearPixels(r, g, b, a);
+}
+
