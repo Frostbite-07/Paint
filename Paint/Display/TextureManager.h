@@ -20,7 +20,7 @@ public:
     TextureManager();
     ~TextureManager();
 
-    void update(const PixelBuffer buffer);
+    void update(const PixelBuffer pixels);
     const sf::Texture &getTexture() const;
 };
 

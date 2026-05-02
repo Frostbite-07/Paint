@@ -22,8 +22,8 @@ TextureManager::~TextureManager() {
     delete impl;
 }
 
-void TextureManager::update(const PixelBuffer& buffer) {
-    impl->texture.update(buffer.getPixels().data());
+void TextureManager::update(const PixelBuffer& pixels) {
+    impl->texture.update(pixels.getPixels().data());
     impl->needsUpdate = false;
 }
 const sf::Texture& TextureManager::getTexture() const {
