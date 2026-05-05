@@ -4,10 +4,11 @@
 
 #include "CanvasSprite.h"
 #include <SFML/Graphics.hpp>
+#include <optional>
 
 class CanvasSprite::Inner {
 public:
-    sf::Sprite sprite;
+    std::optional<sf::Sprite> sprite;
     sf::Vector2f position;
     float scale;
     Inner() : scale(1.0f) {}
@@ -21,16 +22,20 @@ CanvasSprite::~CanvasSprite() {
 }
 
 void CanvasSprite::setTexture(const sf::Texture &texture) {
-    impl->sprite.setTexture(texture, true);
+    impl->sprite.emplace(texture);
+    impl->sprite->setPosition(impl->position);
+    impl->sprite->setScale({impl->scale, impl->scale});
 }
 void CanvasSprite::setPosition(sf::Vector2f pos) {
     impl->position = pos;
-    impl->sprite.setPosition(pos);
+    impl->sprite->setPosition(pos);
 }
 void CanvasSprite::setScale(float scale) {
     impl->scale = scale;
-    impl->sprite.setScale(scale, scale);
+    impl->sprite->setScale({scale, scale});
 }
-void CanvasSprite::draw() {
-    window.draw(impl->sprite);
+void CanvasSprite::draw(sf::RenderWindow &window) {
+    if (impl->sprite) {
+        window.draw(*impl->sprite);
+    }
 }

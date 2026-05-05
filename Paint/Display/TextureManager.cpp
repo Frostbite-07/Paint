@@ -23,6 +23,9 @@ TextureManager::~TextureManager() {
 }
 
 void TextureManager::update(const PixelBuffer& pixels) {
+    if (impl->texture.getSize().x != pixels.getWidth() || impl->texture.getSize().y != pixels.getHeight()) {
+        impl->texture.resize(sf::Vector2u(pixels.getWidth(), pixels.getHeight()));
+    }
     impl->texture.update(pixels.getPixels().data());
     impl->needsUpdate = false;
 }

@@ -22,7 +22,7 @@ public:
     ~CanvasSprite();
 
     void setTexture(const sf::Texture &texture);
-    void setPosition(sf::Vector2f &position);
+    void setPosition(sf::Vector2f position);
     void setScale(float scale);
     void draw(sf::RenderWindow &window);
 };

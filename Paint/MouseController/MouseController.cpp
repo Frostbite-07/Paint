@@ -1,5 +1,5 @@
 #include "MouseController.h"
-#include "PixelBuffer.h"
+#include "../PixelBuffer/PixelBuffer.h"
 
 MouseController::MouseController () {
     isDrawing = false;
