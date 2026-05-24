@@ -1,8 +1,9 @@
 #ifndef ITOOL_H
 #define ITOOL_H
 
-class PixelBuffer; //tas pats, kas include .h faila, taciau sumazina runtime
+#include <SFML/System.hpp> //leidzia naudoti vector2i (x,y)
 
+class PixelBuffer;
 
 class ITool
 {
