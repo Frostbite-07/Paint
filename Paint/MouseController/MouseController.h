@@ -4,13 +4,20 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
 
-class PixelBuffer; 
+enum class ToolType {
+    Brush,
+    Eraser
+};
+
+class PixelBuffer;
 class MouseController {
 private:
     bool isDrawing;
     sf::Color brushColor;
+    sf::Color eraserColor;
     int brushSize;
     float scale;
+    ToolType currentTool;
 
 public:
     MouseController();
@@ -20,7 +27,7 @@ public:
     void setBrushColor(const sf::Color& color);
     void setBrushSize(int size);
     void setScale(float newScale);
-
+    void setTool(ToolType tool);
 };
 
 #endif
