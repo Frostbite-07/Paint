@@ -4,8 +4,10 @@
 MouseController::MouseController () {
     isDrawing = false;
     brushColor = sf::Color::Black;
+    eraserColor = sf::Color::White;
     brushSize = 5;
     scale = 1.0f;
+    currentTool = ToolType::Brush;
 }
 
 void MouseController::setBrushColor(const sf::Color& color) {
@@ -22,6 +24,10 @@ void MouseController::setScale(float newScale) {
     if (newScale > 0.001f) { 
         scale = newScale;
     }
+}
+
+void MouseController::setTool(ToolType tool) {
+    currentTool = tool;
 }
 
 void MouseController::processEvent(const sf::Event& event) {
@@ -41,11 +47,12 @@ void MouseController::update(const sf::Vector2i& mousePos, PixelBuffer& buffer) 
     if (!isDrawing) return;
 
     sf::Vector2i pixelPos = screenToPixel(mousePos);
+    sf::Color activeColor = (currentTool == ToolType::Brush) ? brushColor : eraserColor;
 
     int halfSize = brushSize / 2;
     for (int x = -halfSize; x <= halfSize; ++x) {
         for (int y = -halfSize; y <= halfSize; ++y) {
-            buffer.setPixel(pixelPos.x + x, pixelPos.y + y, brushColor.r, brushColor.g, brushColor.b, 255);//255, kad nebutu permatoma
+            buffer.setPixel(pixelPos.x + x, pixelPos.y + y, activeColor.r, activeColor.g, activeColor.b, 255);//255, kad nebutu permatoma
         }
     }
 }
