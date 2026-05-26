@@ -6,11 +6,14 @@
 #include "Display/TextureManager.h"
 #include "Display/CanvasSprite.h"
 
+const unsigned int WINDOW_WIDTH = 1280;
+const unsigned int WINDOW_HEIGHT = 720;
+
 int main() {
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "Paint 0.9.0");
+    sf::RenderWindow window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "Paint 0.9.1");
     window.setFramerateLimit(60);
 
-    PixelBuffer pixelBuffer(800, 600);
+    PixelBuffer pixelBuffer(WINDOW_WIDTH, WINDOW_HEIGHT);
     TextureManager textureManager;
     CanvasSprite canvasSprite;
     MouseController mouseController;

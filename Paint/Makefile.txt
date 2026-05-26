@@ -1,0 +1,43 @@
+# Compiler and Flags
+CXX      := g++
+CXXFLAGS := -std=c++23 -Wall -Wextra -I. -I./SFML-3.0.2/include
+
+LDFLAGS  := -L./SFML-3.0.2/lib
+
+SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system
+
+TARGET := paintcpp.exe
+
+SFML_DIR := ./SFML-3.0.2
+
+SRCS := main.cpp \
+        PixelBuffer/PixelBuffer.cpp \
+        MouseController/MouseController.cpp \
+        Display/CanvasSprite.cpp \
+        Display/TextureManager.cpp
+
+OBJS := $(SRCS:.cpp=.o)
+
+all: $(TARGET) copy_dlls
+
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(TARGET) $(LDFLAGS) $(SFML_LIBS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+copy_dlls:
+	@if not exist sfml-graphics-3.dll (copy "$(SFML_DIR)\bin\*.dll" .)
+
+run: all
+	.$(TARGET)
+
+clean:
+	@if exist drawing_app.exe del /Q drawing_app.exe
+	@if exist Demo.o del /Q Demo.o
+	@if exist PixelBuffer\PixelBuffer.o del /Q PixelBuffer\PixelBuffer.o
+	@if exist MouseController\MouseController.o del /Q MouseController\MouseController.o
+	@if exist Display\CanvasSprite.o del /Q Display\CanvasSprite.o
+	@if exist Display\TextureManager.o del /Q Display\TextureManager.o
+
+.PHONY: all clean run copy_dlls
