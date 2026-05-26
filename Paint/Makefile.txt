@@ -1,4 +1,3 @@
-# Compiler and Flags
 CXX      := g++
 CXXFLAGS := -std=c++23 -Wall -Wextra -I. -I./SFML-3.0.2/include
 
@@ -8,7 +7,7 @@ SFML_LIBS := -lsfml-graphics -lsfml-window -lsfml-system
 
 TARGET := paintcpp.exe
 
-SFML_DIR := ./SFML-3.0.2
+SFML_DIR_WIN := SFML-3.0.2
 
 SRCS := main.cpp \
         PixelBuffer/PixelBuffer.cpp \
@@ -26,15 +25,18 @@ $(TARGET): $(OBJS)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+
 copy_dlls:
-	@if not exist sfml-graphics-3.dll (copy "$(SFML_DIR)\bin\*.dll" .)
+	@if not exist sfml-system-3.dll   (copy "$(SFML_DIR_WIN)\bin\sfml-system-3.dll" .)
+	@if not exist sfml-window-3.dll   (copy "$(SFML_DIR_WIN)\bin\sfml-window-3.dll" .)
+	@if not exist sfml-graphics-3.dll (copy "$(SFML_DIR_WIN)\bin\sfml-graphics-3.dll" .)
 
 run: all
-	.$(TARGET)
+	$(TARGET)
 
 clean:
-	@if exist drawing_app.exe del /Q drawing_app.exe
-	@if exist Demo.o del /Q Demo.o
+	@if exist paintcpp.exe del /Q paintcpp.exe
+	@if exist main.o del /Q main.o
 	@if exist PixelBuffer\PixelBuffer.o del /Q PixelBuffer\PixelBuffer.o
 	@if exist MouseController\MouseController.o del /Q MouseController\MouseController.o
 	@if exist Display\CanvasSprite.o del /Q Display\CanvasSprite.o
