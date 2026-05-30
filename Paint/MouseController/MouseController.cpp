@@ -1,22 +1,31 @@
 #include "MouseController.h"
 #include "../PixelBuffer/PixelBuffer.h"
+#include "../Itool/BrushTool.h"
+#include "../Itool/EraserTool.h"
+#include "ToolType.h"
 
 MouseController::MouseController () {
     isDrawing = false;
+    isNewStroke = false;
     brushColor = sf::Color::Black;
     eraserColor = sf::Color::White;
     brushSize = 5;
     scale = 1.0f;
-    currentTool = ToolType::Brush;
+    brushTool = std::make_unique<BrushTool>();
+    eraserTool = std::make_unique<EraserTool>();
+    currentToolPointer = brushTool.get();
 }
 
 void MouseController::setBrushColor(const sf::Color& color) {
     brushColor = color;
+    brushTool->setColor(color);
 }
 
 void MouseController::setBrushSize(int size) {
     if (size > 0 && size < 100) { 
         brushSize = size;
+        brushTool->setSize(size);
+        eraserTool->setSize(size);
     }
 }
 
@@ -27,34 +36,39 @@ void MouseController::setScale(float newScale) {
 }
 
 void MouseController::setTool(ToolType tool) {
-    currentTool = tool;
+    if (tool == ToolType::Brush) {
+        currentToolPointer = brushTool.get();
+    } else if (tool == ToolType::Eraser) {
+        currentToolPointer = eraserTool.get();
+    }
 }
 
 void MouseController::processEvent(const sf::Event& event) {
     if (const auto* mousePressed = event.getIf<sf::Event::MouseButtonPressed>()) {
         if (mousePressed->button == sf::Mouse::Button::Left) {
             isDrawing = true;
+            isNewStroke = true;
         }
     }
 
-    if (event.is<sf::Event::MouseButtonReleased>()) {
-        isDrawing = false;
+    if (const auto* mouseReleased = event.getIf<sf::Event::MouseButtonReleased>()) {
+        if (mouseReleased->button == sf::Mouse::Button::Left) {
+            isDrawing = false;
+        }
     }
 
 }
 
 void MouseController::update(const sf::Vector2i& mousePos, PixelBuffer& buffer) {
-    if (!isDrawing) return;
+    if (!isDrawing || currentToolPointer == nullptr) return;
 
     sf::Vector2i pixelPos = screenToPixel(mousePos);
-    sf::Color activeColor = (currentTool == ToolType::Brush) ? brushColor : eraserColor;
-
-    int halfSize = brushSize / 2;
-    for (int x = -halfSize; x <= halfSize; ++x) {
-        for (int y = -halfSize; y <= halfSize; ++y) {
-            buffer.setPixel(pixelPos.x + x, pixelPos.y + y, activeColor.r, activeColor.g, activeColor.b, 255);//255, kad nebutu permatoma
+    if (isNewStroke) {
+            currentToolPointer->pushMouse(pixelPos, buffer);
+            isNewStroke = false;
+        } else {
+            currentToolPointer->moveMouse(pixelPos, buffer);
         }
-    }
 }
 
 sf::Vector2i MouseController::screenToPixel(const sf::Vector2i& screenPos) {

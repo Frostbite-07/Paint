@@ -3,27 +3,29 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
-
-enum class ToolType {
-    Brush,
-    Eraser
-};
+#include <memory>
+#include "../Itool/itool.h"
+#include "ToolType.h"
 
 class PixelBuffer;
+
 class MouseController {
 private:
     bool isDrawing;
+    bool isNewStroke;
+    float scale;
+    int brushSize;
     sf::Color brushColor;
     sf::Color eraserColor;
-    int brushSize;
-    float scale;
-    ToolType currentTool;
+    ITool* currentToolPointer; 
+    std::unique_ptr<ITool> brushTool;
+    std::unique_ptr<ITool> eraserTool;
+    sf::Vector2i screenToPixel(const sf::Vector2i& screenPos);
 
 public:
     MouseController();
     void processEvent(const sf::Event& event);
     void update(const sf::Vector2i& mousePos, PixelBuffer& buffer);
-    sf::Vector2i screenToPixel(const sf::Vector2i& screenPos);
     void setBrushColor(const sf::Color& color);
     void setBrushSize(int size);
     void setScale(float newScale);
