@@ -13,7 +13,10 @@ SRCS := main.cpp \
         PixelBuffer/PixelBuffer.cpp \
         MouseController/MouseController.cpp \
         Display/CanvasSprite.cpp \
-        Display/TextureManager.cpp
+        Display/TextureManager.cpp \
+        Itool/itool.cpp \
+        Itool/BrushTool.cpp \
+        Itool/EraserTool.cpp
 
 OBJS := $(SRCS:.cpp=.o)
 
