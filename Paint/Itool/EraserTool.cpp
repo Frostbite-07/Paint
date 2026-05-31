@@ -15,7 +15,7 @@ void EraserTool::moveMouse(const sf::Vector2i& position, PixelBuffer& buffer) {
             int targetY = position.y + y;
             if (targetX >= 0 && targetX < buffer.getWidth() && 
                 targetY >= 0 && targetY < buffer.getHeight()) {
-                buffer.setPixel(targetX, targetY, 0, 0, 0, 0);
+                buffer.setPixel(targetX, targetY, 255, 255, 255, 255);
             }
         }
     }
